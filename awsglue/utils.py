@@ -14,7 +14,7 @@ import argparse
 import json
 import traceback
 import sys
-from job import Job
+from .job import Job
 
 _global_args = {}
 
@@ -86,7 +86,7 @@ def getResolvedOptions(args, options):
     if Job.encryption_type_options()[0] in options:
         raise RuntimeError("Using reserved arguments " + Job.encryption_type_options()[0])
     parser.add_argument(Job.encryption_type_options()[0], choices = Job.encryption_type_options()[1:])
-        
+
     # TODO: Remove special handling for 'RedshiftTempDir' and 'TempDir' after TempDir is made mandatory for all Jobs
     # Remove 'RedshiftTempDir' and 'TempDir' from list of user supplied options
     options = [opt for opt in options if opt not in {'RedshiftTempDir', 'TempDir'}]

@@ -12,7 +12,14 @@
 
 import json
 from awsglue.utils import makeOptions, callsite
-from itertools import imap, ifilter
+try:
+    from itertools import imap
+except ImportError:
+    imap = map
+try:
+    from itertools import ifilter
+except ImportError:
+    ifilter = filter
 from awsglue.gluetypes import _deserialize_json_string, _create_dynamic_record, _revert_to_dict, _serialize_schema
 from awsglue.utils import _call_site, _as_java_list, _as_scala_option, _as_resolve_choiceOption
 from pyspark.rdd import RDD, PipelinedRDD
@@ -116,7 +123,7 @@ class DynamicFrame(object):
                                             long(totalThreshold)), self.glue_ctx, self.name)
 
     def printSchema(self):
-        print self._jdf.schema().treeString()
+        print(self._jdf.schema().treeString())
 
     def toDF(self, options = None):
         """
@@ -290,7 +297,7 @@ class DynamicFrame(object):
                                              _call_site(self._sc, callsite(), info), long(stageThreshold),
                                              long(totalThreshold)),
                             self.glue_ctx, self.name)
-            
+
     def join(self, paths1, paths2, frame2, transformation_ctx = "", info = "", stageThreshold = 0, totalThreshold = 0):
         if isinstance(paths1, basestring):
             paths1 = [paths1]
